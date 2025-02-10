@@ -1,0 +1,12 @@
+﻿  function.c
+D:\PTIT2024B EXCERCISE\C\store_management\function.c(81,11): warning C4477: 'scanf_s' : format string '%[^\n]' requires an argument of type 'unsigned int', but variadic argument 2 has type 'size_t'
+      D:\PTIT2024B EXCERCISE\C\store_management\function.c(81,11):
+      this argument is used as a buffer size
+  
+  main.c
+D:\PTIT2024B EXCERCISE\C\store_management\function.c(84,11): warning C4477: 'scanf_s' : format string '%[^\n]' requires an argument of type 'unsigned int', but variadic argument 2 has type 'size_t'
+      D:\PTIT2024B EXCERCISE\C\store_management\function.c(84,11):
+      this argument is used as a buffer size
+  
+  Generating Code...
+  store_management.vcxproj -> D:\PTIT2024B EXCERCISE\C\store_management\x64\Debug\store_management.exe
