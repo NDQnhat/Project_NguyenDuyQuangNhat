@@ -15,7 +15,7 @@ void printMainMenu()
 	printf("===============================\n");
 	printf("[1] Management Category\n");
 	printf("[2] Management Product\n");
-	printf("[3] Identify Admin\n");
+	printf("[3] Identify Admin (Otherwise uses with guest)\n");
 	printf("[4] Exit The Program\n");
 	printf("===============================\n");
 	printf("Enter The Choice: ");
@@ -78,19 +78,55 @@ void addCategory(struct category* _category, int* size)
 {
 	int quantity;
 	printf("Enter number of category to add: ");
-	scanf_s("%d", &quantity);
+	while (scanf_s("%d", &quantity) <= 0) {
+		printf("Invalid input! Enter again\n");
+		//fflush(stdin);
+		while (getchar() != '\n');		//xoa' bo. nho' dem
+	}
 	getchar();
-	int i = 0;
-	for (; i < quantity; i++) {		//[Error] 'for' loop initial declarations are only allowed in C99 or C11 mode
-		printf("Category Id: ");
-		scanf_s(" %[^\n]", _category[i].categoryId, 10);	//10 la` do id[10]
-		getchar();
-		printf("Category Name: ");
-		scanf_s(" %[^\n]", _category[i].categoryName, 10);	//name[10]
-		getchar();
+	for (int i = 0; i < quantity; i++) {
+		struct category temp;
+		int isValid = 0;
+		while (!isValid) {
+			isValid = 1;	//gia? su? DL hop. le. otherwise =0
+			printf("Category Id: ");
+			scanf_s(" %[^\n]", temp.categoryId, sizeof(temp.categoryId));	
+			getchar();
+			printf("Category Name: ");
+			scanf_s(" %[^\n]", temp.categoryName, sizeof(temp.categoryName));
+			//fgets(temp.categoryName, sizeof(temp.categoryName), stdin);
+			getchar();
+			/*int length = (int)strlen(temp.categoryName);
+			if (length > 0 && temp.categoryName[length - 1] == '\n') {
+				temp.categoryName[len - 1] = '\0';
+			}*/
+			
+			//kiem? tra rong~
+			if (strlen(temp.categoryId) == 0 || strlen(temp.categoryName) == 0) {
+				isValid=0; 
+				printf("Id or Name invalid!!\n");
+				continue;
+			}
+
+			//kiem? tra trung` id
+			for (int j = 0;j < *size;j++) {
+				if (strcmp(temp.categoryId, _category[j].categoryId) == 0 ) {
+					printf("Category Id already exist!!\n");
+					isValid = 0;
+					break;
+				}
+				if (strcmp(temp.categoryName, _category[j].categoryName) == 0) {
+					printf("Category name already exist!!\n");
+					isValid = 0;
+					break;
+				}
+			}
+		}
+		_category[*size] = temp;
 		(*size)++;
+		printf("ADD SUCCESS!\n");
 		printf("\n");
-	} printf("ADD SUCCESS!\n");
+	}			
 };
 
 
@@ -216,23 +252,23 @@ void saveCategoryData(struct category* _category)
 				printf("Cannot open file!!!\n");
 				break;
 			}
-			fread(_category, sizeof(_category), 1, file);
+			fread(_category, sizeof(struct category), 1, file);
 			fclose(file);
 			printf("Load category to file success!!\n");
 			break;
 		}
 		case 2:	//mo? file va` luu du~ lieu vao` file, neu' file chua tao. thi` tao moi' file 
 		{
-			FILE* file = fopen("category.bin", "ab");
+			FILE* file = fopen("D:\PTIT2024B EXCERCISE\C\store_management\category.bin", "ab");
 			if (file == NULL) {
-				file = fopen("category.bin", "wb");
+				file = fopen("D:\PTIT2024B EXCERCISE\C\store_management\category.bin", "wb");
 				if (file == NULL) {
-					printf("No data in file\n");
+					printf("Error creating file\n");
 					break;
 				}
 				printf("File created!\n");
 			}
-			fwrite(_category, sizeof(_category), 1, file);
+			fwrite(_category, sizeof(struct category), 1, file);
 			fclose(file);
 			printf("Add data to file success!\n");
 			break;
@@ -257,6 +293,7 @@ void manageCategory(int* command, struct category* _categoryList, int* size)
 	{
 		printManagementCategoryMenu();
 		scanf_s("%d", command);
+		getchar();
 		if (*command >= 1 && *command <= 8) {
 			switch (*command)
 			{
@@ -279,6 +316,7 @@ void manageCategory(int* command, struct category* _categoryList, int* size)
 				arrangeByName(_categoryList, *size);
 				break;
 			case 7:
+				saveCategoryData(_categoryList);
 				break;
 			case 8:
 				printf("Out Of Interface\n");

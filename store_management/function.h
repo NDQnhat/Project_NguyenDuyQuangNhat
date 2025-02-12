@@ -35,7 +35,7 @@ void searchByName(struct category _category, int size);
 void arrangeByName(struct category* $category, int size);
 
 //ham` luu du~ lieu. danh muc. vao` file
-void saveCategoryData(struct category* _category);
+void saveCategoryData(struct category* _category);	//can` sua? lai.
 
 
 
