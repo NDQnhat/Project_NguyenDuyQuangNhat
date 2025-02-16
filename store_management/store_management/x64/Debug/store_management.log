@@ -1,0 +1,3 @@
+﻿  function.c
+D:\PTIT2024B EXCERCISE\C\store_management\function.c(385,16): warning C4101: 'count': unreferenced local variable
+  store_management.vcxproj -> D:\PTIT2024B EXCERCISE\C\store_management\x64\Debug\store_management.exe
