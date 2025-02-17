@@ -127,12 +127,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="category.c" />
     <ClCompile Include="function.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="product.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="category.h" />
     <ClInclude Include="datatype.h" />
     <ClInclude Include="function.h" />
+    <ClInclude Include="product.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="account.bin" />

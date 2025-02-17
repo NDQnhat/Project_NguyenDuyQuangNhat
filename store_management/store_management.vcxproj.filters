@@ -24,12 +24,24 @@
     <ClCompile Include="function.c">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="category.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="product.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="datatype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="function.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="category.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="product.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

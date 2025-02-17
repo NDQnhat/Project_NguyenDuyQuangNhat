@@ -3,6 +3,9 @@
 #include <string.h>
 #include "datatype.h"
 #include "function.h"
+#include "category.h"
+#include "product.h"
+
 #define MAX 100 
 
 
