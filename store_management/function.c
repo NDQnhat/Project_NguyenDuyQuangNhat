@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <conio.h>
 
 #define MAX 100
 
@@ -1035,6 +1036,37 @@ void manageProduct(int* command, struct product* _productList, int* size, struct
 
 
 //======================================================================
+// ham` hien. "*" cho pass
+void getPassword(char* pass, int length)
+{
+	int i = 0;
+	char c;
+	while (1)
+	{
+		c = _getch();	//lay' ki' tu. khong hien. ten man` hinh`
+		if (c == 13) {	//xu? li' enter
+			pass[i] = '\0';
+			break;
+		}
+		else if (c == 8) {	//xu? li' backspace
+			if (i > 0) {
+				i--;
+				printf("\b \b");
+			}
+		}
+		else if (i < length - 1) {
+			pass[i] = c;
+			i++;
+			printf("*");
+		}
+	}
+}
+
+
+
+
+
+
 //ham` cac' thuc. admin
 void identifyAdmin(int* status)
 {
@@ -1068,7 +1100,7 @@ void identifyAdmin(int* status)
 			scanf_s(" %[^\n]", input.userName, 20);
 			getchar();
 			printf("Password: ");
-			scanf_s(" %[^\n]", input.password, 20);
+			getPassword(input.password, 20);
 			getchar();
 			for (int i = 0;i < size;i++) {
 				if (isFounded(accountList[i].userName, input.userName) && isFounded(accountList[i].password, input.password)) {
@@ -1094,7 +1126,7 @@ void identifyAdmin(int* status)
 			scanf_s(" %[^\n]", input.userName, 20);
 			getchar();
 			printf("Password: ");
-			scanf_s(" %[^\n]", input.password, 20);
+			getPassword(input.password, 20);
 			getchar();
 			for (int i = 0;i < size;i++) {
 				if (isFounded(accountList[i].userName, input.userName) || isFounded(accountList[i].password, input.password)) {

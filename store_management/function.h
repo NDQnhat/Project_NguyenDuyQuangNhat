@@ -82,5 +82,8 @@ void manageProduct(int* command, struct product* _productList, int* size, struct
 
 //===========================================================//
 
+//ham` in * cho pass
+void getPassword(char* pass, int length);
+
 //ham` xac' thuc. admin
 void identifyAdmin(int* status);
