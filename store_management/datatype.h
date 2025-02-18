@@ -1,7 +1,7 @@
 #pragma once
 // kieu? du~ lieu. ngay` thang' nam
 struct date {
-	int month, day, year;
+	int month, day, year, hour, minute, second;
 };
 //kieu? du~ lieu. ten danh muc.
 struct category {

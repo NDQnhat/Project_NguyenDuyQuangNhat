@@ -141,6 +141,7 @@
   <ItemGroup>
     <None Include="account.bin" />
     <None Include="category.bin" />
+    <None Include="order.bin" />
     <None Include="product.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

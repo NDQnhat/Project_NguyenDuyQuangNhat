@@ -11,16 +11,17 @@
 
 int main(int argc, char* argv[])
 {
-	int command, countCategory = 0, countProduct = 0, status=0;
-	const char* checkCode = "storeManagement";
+	int command, countCategory = 0, countProduct = 0, status=0, countOrder=0;
+	const char* checkCode = "WhyDoBirdsFly?";
 	struct category categoryList[MAX];
 	struct product productList[MAX];
+	struct order orderList[MAX];
 	while (1)
 	{
 		printMainMenu();
 		scanf_s("%d", &command);
-		fflush(stdin);
-		if (command >= 1 && command <= 4) {
+		getchar();
+		if (command >= 0 && command <= 4) {	//du. tinh' lam` 1 bien' command de? dieu` huong' tat' ca? cac' ham`
 			switch (command)
 			{
 			case 1:
@@ -43,12 +44,23 @@ int main(int argc, char* argv[])
 				}
 				else {
 					printf("Wrong!! Ask manager to know authentication code!!\n");
+					pressEnterToExit();
 				}
 				break;
 			}
 			case 4:
 				printf("Out Of Program\n");
 				return 0;
+			case 0:
+				system("cls");
+				if (status) {
+					viewBillList(orderList, &countOrder);
+				}
+				else {
+					printf("MUST BE ADMIN TO DO THIS!!!\n");
+					pressEnterToExit();
+				}
+				break;
 			}
 		}
 		else {

@@ -1,7 +1,3 @@
-﻿  category.c
-  function.c
-D:\PTIT2024B EXCERCISE\C\store_management\category.c(417,16): warning C4101: 'count': unreferenced local variable
-  main.c
-  product.c
-  Generating Code...
+﻿  function.c
+D:\PTIT2024B EXCERCISE\C\store_management\function.c(162,13): warning C4129: '/': unrecognized character escape sequence
   store_management.vcxproj -> D:\PTIT2024B EXCERCISE\C\store_management\x64\Debug\store_management.exe

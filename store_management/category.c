@@ -47,6 +47,7 @@ void printCategoryList(struct category* _category, int size, int status)
 				printf("|----------|----------|\n");
 			}
 		}
+		pressEnterToExit();
 	}
 	else {
 		int length = 0;
@@ -66,6 +67,7 @@ void printCategoryList(struct category* _category, int size, int status)
 			printf("|%-10s|%-10s|\n", list[i].categoryId, list[i].categoryName);
 			printf("|----------|----------|\n");
 		}
+		pressEnterToExit();
 	}
 };
 
@@ -145,11 +147,12 @@ void addCategory(struct category* _category, int* size, int status)
 			(*size)++;
 			printf("ADD SUCCESS!\n");
 			printf("\n");
+			pressEnterToExit();
 		}
 	}
 	else {
 		printf("Must be admin to access!!\n");
-		return;
+		pressEnterToExit();
 	}
 };
 
@@ -182,6 +185,7 @@ void editCategory(struct category* _category, int size, int status)
 					isValid = 1;
 					printf("Name to change: ");
 					scanf_s(" %[^\n]", temp.categoryName, 10);
+					getchar();
 					if (strlen(temp.categoryName) == 0) {
 						isValid = 0;
 						printf("Name invalid!!\n");
@@ -208,10 +212,11 @@ void editCategory(struct category* _category, int size, int status)
 		} if (flag) {
 			printf("Cannot found the ID in category in RAM\n");
 		}
+		pressEnterToExit();
 	}
 	else {
 		printf("Must be admin to acess!!\n");
-		return;
+		pressEnterToExit();
 	}
 };
 
@@ -242,13 +247,14 @@ void delCategory(struct category* _category, int* size, int status)
 							}
 							(*size)--;
 							printf("Delete success!!!\n");
+							pressEnterToExit();
 							break;
 						}
 					}
 					break;
 				case 2:
 					printf("Out of this script without doing anything\n");
-					return;
+					pressEnterToExit();
 				default:
 					printf("Wrong choice! Out of this script\n");	//nhap. sai thi` khong cho xoa' nua~
 				}
@@ -256,11 +262,12 @@ void delCategory(struct category* _category, int* size, int status)
 		}
 		if (flag) {
 			printf("ID not exist!!\n");
+			pressEnterToExit();
 		}
 	}
 	else {
 		printf("Must be admin to acess!!\n");
-		return;
+		pressEnterToExit();
 	}
 };
 
@@ -288,6 +295,7 @@ void searchByName()	//truyen` tham tri. vao _category vi` ham` isFounded can tru
 	int flag = 1, _flag = 1;
 	printf("Enter a part of category name to find: ");
 	scanf_s(" %[^\n]", name, 10);
+	getchar();
 	for (int i = 0;i < size;i++) {
 		//if (isFounded(name, _category[i].categoryName)) {		//tim` tuyet. doi'
 		//	flag = 0;
@@ -304,54 +312,58 @@ void searchByName()	//truyen` tham tri. vao _category vi` ham` isFounded can tru
 			printf("ID: %s, Name: %s\n", temp2[i].categoryId, temp2[i].categoryName);
 		}
 	}
+	pressEnterToExit();
 	if (flag) {
 		printf("Cannot found category!!\n");
+		pressEnterToExit();
 	}
 };
 
 //ham` sap' theo ten
 void arrangeByName(struct category* $category, int size, int status)
 {
-	printf("1. Ascending\t2. Decreasing\tOther: Out\n");
-	printf("Enter your choice: ");
-	int choice;
-	scanf_s("%d", &choice);
-	getchar();
-	switch (choice)
-	{
-	case 1:
-		for (int i = 0;i < size - 1;i++) {
-			for (int j = 0;j < size - i - 1;j++) {
-				if (strcmp($category[j].categoryName, $category[j + 1].categoryName) > 0) {
-					struct category temp = $category[j];
-					$category[j] = $category[j + 1];
-					$category[j + 1] = temp;
-				}
-			}
-		}
-		printf("Arrange Success!\n");
-		break;
-	case 2:
-		for (int i = 0;i < size - 1;i++) {
-			for (int j = 0;j < size - i - 1;j++) {
-				if (strcmp($category[j].categoryName, $category[j + 1].categoryName) < 0) {
-					struct category temp = $category[j];
-					$category[j] = $category[j + 1];
-					$category[j + 1] = temp;
-				}
-			}
-		}
-		printf("Arrange Success!\n");
-		break;
-	default:
-		printf("Out without doing anything\n");
-		return;
-	}
 	if (status) {
+		printf("1. Ascending\t2. Decreasing\tOther: Out\n");
+		printf("Enter your choice: ");
+		int choice;
+		scanf_s("%d", &choice);
+		getchar();
+		switch (choice)
+		{
+		case 1:
+			for (int i = 0;i < size - 1;i++) {
+				for (int j = 0;j < size - i - 1;j++) {
+					if (strcmp($category[j].categoryName, $category[j + 1].categoryName) > 0) {
+						struct category temp = $category[j];
+						$category[j] = $category[j + 1];
+						$category[j + 1] = temp;
+					}
+				}
+			}
+			printf("Arrange Success!\n");
+			break;
+		case 2:
+			for (int i = 0;i < size - 1;i++) {
+				for (int j = 0;j < size - i - 1;j++) {
+					if (strcmp($category[j].categoryName, $category[j + 1].categoryName) < 0) {
+						struct category temp = $category[j];
+						$category[j] = $category[j + 1];
+						$category[j + 1] = temp;
+					}
+				}
+			}
+			printf("Arrange Success!\n");
+			break;
+		default:
+			printf("Out without doing anything\n");
+			pressEnterToExit();
+			return;
+		}
 		printCategoryList($category, size, 1);
 	}
 	else {
-		printCategoryList($category, size, 0);
+		printf("Must be admin to do this!!\n");
+		pressEnterToExit();
 	}
 };
 
@@ -408,6 +420,7 @@ void saveCategoryData(struct category* _category, int* size, int status)
 			}
 			fclose(file);
 			printf("Load category from file success!!\n");
+			pressEnterToExit();
 			break;
 		}
 		case 2: //mo? file va` luu du~ lieu vao` file, neu' file chua tao. thi` tao moi' file
@@ -434,6 +447,7 @@ void saveCategoryData(struct category* _category, int* size, int status)
 				fwrite(_category, sizeof(struct category), *size, file);
 				fclose(file);
 				printf("Save category to file success!\n");
+				pressEnterToExit();
 				break;
 			case 2:
 				file = fopen("category.bin", "wb");
@@ -447,23 +461,26 @@ void saveCategoryData(struct category* _category, int* size, int status)
 				fwrite(_category, sizeof(struct category), *size, file);
 				fclose(file);
 				printf("Save category to file success!\n");
+				pressEnterToExit();
 				break;
 			default:
 				printf("Out of command\n");
-				return;
+				pressEnterToExit();
 			}
 			break;
 		}
 		case 0:
 			printf("Back to previous\n");
-			return;
+			pressEnterToExit();
+			break;
 		default:
 			printf("Out this script without doing anything\n");
-			return;
+			pressEnterToExit();
+			break;
 		}
 	}
 	else {
 		printf("Must be admin to acess!!\n");
-		return;
+		pressEnterToExit();
 	}
 }

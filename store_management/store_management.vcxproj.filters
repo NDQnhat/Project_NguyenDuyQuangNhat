@@ -55,5 +55,8 @@
     <None Include="account.bin">
       <Filter>File Saved</Filter>
     </None>
+    <None Include="order.bin">
+      <Filter>File Saved</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -50,8 +50,9 @@ void printProductList(struct product* _product, int size, int status)
 				printf("|------------|------------|------------|----------|-------|\n");
 			}
 		}
+		pressEnterToExit();
 	}
-	else {
+	else {		
 		FILE* file = fopen("product.bin", "rb");
 		struct product temp;
 		int length = 0;
@@ -69,6 +70,8 @@ void printProductList(struct product* _product, int size, int status)
 			printf("|%-12s|%-12s|%-12s|%10d|%7d|\n", list[i].productId, list[i].categoryId, list[i].productName, list[i].quantity, list[i].price);
 			printf("|------------|------------|------------|----------|-------|\n");
 		}
+		printf("\n\n");
+		buyProduct();
 	}
 };
 
@@ -154,24 +157,29 @@ void addProduct(struct product* $product, int* size, struct category* _category,
 			}
 			//kiem? tra ton` tai. cua? danh muc., neu' chua thi them vao` danh muc. moi'
 			int flag = 1;
+			struct category _temp;
+			struct category _list[MAX];
+			int _size = 0;
+			FILE* file = fopen("category.bin", "rb");
+			while (fread(&_temp, sizeof(struct category), 1, file)) {
+				_list[_size] = _temp;
+				_size++;
+			}
+			fclose(file);
 			for (int t = 0;t < *length;t++) {
-				if (strcmp(temp.categoryId, _category[t].categoryId) == 0 && strcmp(temp.categoryId, list[i].categoryId) == 0) {
+				if (strcmp(temp.categoryId, _category[t].categoryId) == 0) {
 					flag = 0;	//vao` if tuc' la` category da~ ton` tai.
+				}
+			}
+			for (int k = 0;k < _size;k++) {
+				if (strcmp(temp.categoryId, _list[k].categoryId) == 0) {
+					flag = 0;
 				}
 			}
 			if (flag) {		//category Id chua ton` tai. thi` them moi' vao`
 				printf("Category does not exist! Need to add!!\n");
-				struct category temp;
-				struct category _temp;
-				struct category _list[MAX];
-				int _size = 0;
-				FILE* file = fopen("category.bin", "rb");
-				while (fread(&_temp, sizeof(struct category), 1, file)) {
-					_list[_size] = _temp;
-					_size++;
-				}
-				fclose(file);
 				int isTrue = 0;
+				struct category temp;
 				while (!isTrue) {
 					isTrue = 1;	//gia? su? DL hop. le. otherwise =0
 					printf("Category Id: ");
@@ -187,12 +195,12 @@ void addProduct(struct product* $product, int* size, struct category* _category,
 					}
 					for (int j = 0;j < *size;j++) {
 						if (isFounded(temp.categoryId, _category[j].categoryId)) {
-							printf("Category Id already exist!!\n");
+							printf("Category Id already exist in RAM!!\n");
 							isTrue = 0;
 							break;
 						}
 						if (isFounded(temp.categoryName, _category[j].categoryName)) {
-							printf("Category name already exist!!\n");
+							printf("Category name already exist in RAM!!\n");
 							isTrue = 0;
 							break;
 						}
@@ -217,10 +225,12 @@ void addProduct(struct product* $product, int* size, struct category* _category,
 			$product[*size] = temp;
 			(*size)++;
 			printf("\n");
+			pressEnterToExit();
 		}
 	}
 	else {
 		printf("Must be admin to acess!!\n");
+		pressEnterToExit();
 		return;
 	}
 };
@@ -306,9 +316,11 @@ void editProduct(struct product* _product, int size, int status)
 		if (!index) {
 			printf("Cannot found Id!!\n");
 		}
+		pressEnterToExit();
 	}
 	else {
 		printf("Must be admin to acess!!\n");
+		pressEnterToExit();
 		return;
 	}
 }
@@ -330,14 +342,17 @@ void delProduct(struct product* _product, int* size, int status)
 				}
 				(*size)--;
 				printf("Deleted successfully!!!\n");
+				break;
 			}
 		}
 		if (flag) {
 			printf("Cannot found Id!!!\n");
 		}
+		pressEnterToExit();
 	}
 	else {
 		printf("Must be admin to acess!!\n");
+		pressEnterToExit();
 		return;
 	}
 };
@@ -393,54 +408,104 @@ void searchProductByName()
 	}
 	if (flag) {
 		printf("Cannot found product!!\n");
+		return;
 	}
+	buyProduct();
 }
 
 //sap' xep' san? pham? theo gia'
 void arrangeProductByPrice(struct product* _product, int size, int status)
 {
-	int command;
-	printf("1. Ascending\t2. Decreasing\tOther. Out\n");
-	printf("your choice: ");
-	scanf_s("%d", &command);
-	getchar();
-	switch (command)
-	{
-	case 1:
-	{
-		for (int i = 0;i < size - 1;i++) {
-			if (_product[i].price > _product[i + 1].price) {
-				struct product temp;
-				temp = _product[i];
-				_product[i] = _product[i + 1];
-				_product[i + 1] = temp;
-			}
-		}
-		printf("Sorted sucessfully!!\n");
-		break;
-	}
-	case 2:
-	{
-		for (int i = 0;i < size - 1;i++) {
-			if (_product[i].price < _product[i + 1].price) {
-				struct product temp;
-				temp = _product[i];
-				_product[i] = _product[i + 1];
-				_product[i + 1] = temp;
-			}
-		}
-		printf("Sorted sucessfully!!\n");
-		break;
-	}
-	default:
-		printf("Out without doing anything\n");
-		return;
-	}
 	if (status) {
-
+		int command;
+		printf("1. Ascending\t2. Decreasing\tOther. Out\n");
+		printf("your choice: ");
+		scanf_s("%d", &command);
+		getchar();
+		switch (command)
+		{
+		case 1:
+		{
+			for (int i = 0;i < size - 1;i++) {
+				if (_product[i].price > _product[i + 1].price) {
+					struct product temp;
+					temp = _product[i];
+					_product[i] = _product[i + 1];
+					_product[i + 1] = temp;
+				}
+			}
+			printf("Sorted sucessfully!!\n");
+			break;
+		}
+		case 2:
+		{
+			for (int i = 0;i < size - 1;i++) {
+				if (_product[i].price < _product[i + 1].price) {
+					struct product temp;
+					temp = _product[i];
+					_product[i] = _product[i + 1];
+					_product[i + 1] = temp;
+				}
+			}
+			printf("Sorted sucessfully!!\n");
+			break;
+		}
+		default:
+			printf("Out without doing anything\n");
+			return;
+		}
 		printProductList(_product, size, 1);
 	}
 	else {
+		FILE* file = fopen("category.bin", "rb");
+		struct product temp;
+		int count = 0;
+		while (fread(&temp, sizeof(struct product), 1, file)) {
+			_product[count] = temp;
+			count++;
+		}
+		fclose(file);
+		int command;
+		printf("1. Ascending\t2. Decreasing\tOther. Out\n");
+		printf("your choice: ");
+		scanf_s("%d", &command);
+		getchar();
+		switch (command)
+		{
+		case 1:
+		{
+			for (int i = 0;i < size - 1;i++) {
+				if (_product[i].price > _product[i + 1].price) {
+					struct product temp;
+					temp = _product[i];
+					_product[i] = _product[i + 1];
+					_product[i + 1] = temp;
+				}
+			}
+			printf("Sorted sucessfully!!\n");
+			break;
+		}
+		case 2:
+		{
+			for (int i = 0;i < size - 1;i++) {
+				if (_product[i].price < _product[i + 1].price) {
+					struct product temp;
+					temp = _product[i];
+					_product[i] = _product[i + 1];
+					_product[i + 1] = temp;
+				}
+			}
+			printf("Sorted sucessfully!!\n");
+			break;
+		}
+		default:
+			printf("Out without doing anything\n");
+			pressEnterToExit();
+			return;
+		}
+		file = fopen("category.bin", "wb");
+		fwrite(_product, sizeof(struct product), count, file); 
+		fclose(file);
 		printProductList(_product, size, 0);
 	}
 };
@@ -494,6 +559,7 @@ void filterProduct()
 			printf("Id not exist\n");
 			return;
 		}
+		buyProduct();
 		break;
 	case 2:
 		printf("Enter the price range\n");
@@ -519,10 +585,13 @@ void filterProduct()
 		}
 		if (flag) {
 			printf("No products are avaiable in selected range!!\n");
+			return;
 		}
+		buyProduct();
 		break;
 	default:
 		printf("Out without doing anything!\n");
+		pressEnterToExit();
 		return;
 	}
 };
@@ -555,6 +624,7 @@ void saveProductData(struct product* _product, int* size, int status)
 			}
 			fclose(file);
 			printf("Load category from file success!!\n");
+			pressEnterToExit();
 			break;
 		}
 		case 2: //mo? file va` luu du~ lieu vao` file, neu' file chua tao. thi` tao moi' file
@@ -586,18 +656,22 @@ void saveProductData(struct product* _product, int* size, int status)
 			fwrite(_product, sizeof(struct product), *size, file);
 			fclose(file);
 			printf("Save category to file success!\n");
+			pressEnterToExit();
 			break;
 		}
 		case 0:
 			printf("Back to previous\n");
+			pressEnterToExit();
 			return;
 		default:
 			printf("Out this script without doing anything\n");
+			pressEnterToExit();
 			return;
 		}
 	}
 	else {
 		printf("Must be admin to acess!!\n");
+		pressEnterToExit();
 		return;
 	}
 };
