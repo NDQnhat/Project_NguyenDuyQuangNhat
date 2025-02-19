@@ -312,11 +312,10 @@ void searchByName()	//truyen` tham tri. vao _category vi` ham` isFounded can tru
 			printf("ID: %s, Name: %s\n", temp2[i].categoryId, temp2[i].categoryName);
 		}
 	}
-	pressEnterToExit();
 	if (flag) {
 		printf("Cannot found category!!\n");
-		pressEnterToExit();
 	}
+	pressEnterToExit();
 };
 
 //ham` sap' theo ten
